@@ -1,15 +1,20 @@
+import { useTodosContext } from "../stores/todos/todos.store";
+import { TodosActions } from "../stores/todos/todos.store.types";
+
 export enum FilterStateEnum {
   ALL = "ALL",
   COMPLETED = "COMPLETED",
   TODO = "TODO",
 }
 
-interface FilterItemsSelectProps {
-  onChange: (state: FilterStateEnum) => void;
-}
-export function FilterItemsSelect({ onChange }: FilterItemsSelectProps) {
+export function FilterItemsSelect() {
+  const { dispatch } = useTodosContext();
+
   const onChangeHandler: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-    onChange(e.target.value as FilterStateEnum);
+    dispatch({
+      type: TodosActions.FILTER,
+      payload: e.target.value as FilterStateEnum,
+    });
   };
   return (
     <select

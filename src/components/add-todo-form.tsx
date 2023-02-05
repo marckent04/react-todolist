@@ -1,15 +1,20 @@
 import { useState } from "react";
+import { useTodosContext } from "../stores/todos/todos.store";
+import { TodosActions } from "../stores/todos/todos.store.types";
 
-interface AddTodoFormProps {
-  handler: (todo: string) => void;
-}
-
-export function AddTodoForm({ handler }: AddTodoFormProps) {
+export function AddTodoForm() {
   const [todo, setTodo] = useState<string>("");
+
+  const { dispatch } = useTodosContext();
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    handler(todo as string);
+
+    dispatch({
+      type: TodosActions.ADD,
+      payload: todo,
+    });
+
     setTodo("");
   };
   return (

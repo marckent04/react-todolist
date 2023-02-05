@@ -1,29 +1,14 @@
-import { FilterStateEnum } from "../components/filter-items-select";
-import { Todo } from "../models/Todo.model";
+import { Reducer } from "react";
+import { FilterStateEnum } from "../../components/filter-items-select";
+import { Todo } from "../../models/Todo.model";
+import {
+  TodoState,
+  UpdateTodoStatusPayload,
+  TodoAction,
+  TodosActions,
+} from "./todos.store.types";
 
-export enum TodosActions {
-  ADD = "ADD",
-  UPDATE_STATUS = "UPDATE_STATUS",
-  FILTER = "FILTER",
-  REFRESH_FILTER = "REFRESH_FILTER",
-}
-
-interface TodoState {
-  all: Todo[];
-  visibleTodos: Todo[];
-  filterStatus: FilterStateEnum;
-}
-
-interface TodoAction {
-  type: TodosActions;
-  payload?: any;
-}
-
-export interface UpdateTodoStatusPayload {
-  todo: Todo;
-  value: boolean;
-}
-
+export type TodoReducerType = Reducer<TodoState, TodoAction>;
 const filterTodos = (
   state: TodoState,
   filterState: FilterStateEnum,
@@ -63,7 +48,10 @@ const updateTodoStatus = (
   };
 };
 
-export function todosReducer(state: TodoState, action: TodoAction) {
+export const todosReducer: TodoReducerType = (
+  state: TodoState,
+  action: TodoAction,
+) => {
   console.log(action);
 
   switch (action.type) {
@@ -83,10 +71,4 @@ export function todosReducer(state: TodoState, action: TodoAction) {
     default:
       throw new Error();
   }
-}
-
-export const initialTodosState: TodoState = {
-  all: [],
-  filterStatus: FilterStateEnum.ALL,
-  visibleTodos: [],
 };
